@@ -14,20 +14,20 @@
   boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
-
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/5226437b-2f0d-4116-ad8e-1b967365c117";
+    { device = "/dev/disk/by-uuid/367ddff0-1baa-456c-ac92-a43d149f38ae";
       fsType = "ext4";
     };
 
   fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/A167-8E28";
+    { device = "/dev/disk/by-uuid/F591-00E7";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/647ab3d8-ba42-436f-94b6-7aa286fe5f52"; }
+    [ { device = "/dev/disk/by-uuid/278236fb-010f-4376-862a-99c55a96ec4a"; }
     ];
+
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -72,5 +72,7 @@
       };
     };
   };
-
+  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+  powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

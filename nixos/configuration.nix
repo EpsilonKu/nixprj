@@ -3,7 +3,6 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
-
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -98,7 +97,6 @@
   nixpkgs = {
     system = "x86_64-linux";
     config.allowUnfree = true;
-    "https://nixos.org/channels/nixos-21.05/nixexprs.tar.xz"
   };
 
 # using the overlays
@@ -133,9 +131,9 @@ fonts.fonts = with pkgs; [
   #   enable = true;
   #   enableSSHSupport = true;
   # };
-
   # List services that you want to enable:
 
+  programs.home-manager.enable = true;
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
