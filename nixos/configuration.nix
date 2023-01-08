@@ -3,18 +3,16 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, ... }:
+
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix 
+      ./hardware-configuration.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-
-  # nix.nixPath = [ "nixos-config=/home/epsku/nixprj/nixos/configuration.nix" ];
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -47,16 +45,15 @@
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
+  # Enable the Pantheon Desktop Environment.
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.pantheon.enable = true;
 
   # Configure keymap in X11
   services.xserver = {
     layout = "us";
     xkbVariant = "";
   };
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
@@ -88,40 +85,27 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
-      discord
-      kitty
     ];
   };
 
   # Allow unfree packages
-  nixpkgs = {
-    system = "x86_64-linux";
-    config.allowUnfree = true;
+  nixpkgs.config.allowUnfree = true;
+  nix = {
+    package = pkgs.nixUnstable;
+    extraOptions = ''
+      experimental-features = nix-command flakes
+    '';
   };
 
-# using the overlays
-#  nixpkgs.overlays = [
-#    (builtins.getFlake "github:fortuneteller2k/nixpkgs-f2k").overlays.default
-# ];
-  nixpkgs.overlays = [
-    (import (builtins.fetchTarball {
-      url = https://github.com/nix-community/neovim-nightly-overlay/archive/master.tar.gz;
-    }))
-  ];
-  # for NixOS modules (do not use them in home.nix)
-#  imports = [ (builtins.getFlake "github:fortuneteller2k/nixpkgs-f2k").nixosModules.stevenblack ];
-
-fonts.fonts = with pkgs; [
-  (nerdfonts.override { fonts = [ "IBMPlexMono" "CascadiaCode" ]; })
-];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    neovim-nightly # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    git
-    wget
+  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
+	neovim
+	discord
+	git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -131,9 +115,9 @@ fonts.fonts = with pkgs; [
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
   # List services that you want to enable:
 
-  programs.home-manager.enable = true;
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
