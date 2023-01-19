@@ -8,8 +8,8 @@
 
   home.packages = with pkgs; [                              
     htop
-    ripgrep
     github-desktop
+    wezterm
     # neovim-nightly
     jetbrains.idea-ultimate
   ];
