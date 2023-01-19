@@ -10,6 +10,9 @@
   home.packages = with pkgs; [
     neovim
     lua51Packages.mpack
+    xclip
+    ripgrep
+    sumneko-lua-language-server
 
   ];
 
