@@ -5,8 +5,9 @@
     enable = true;
 
     font = {
-      name = "BlexMono Nerd Font";
-      size = 12;
+      # name = "CaskaydiaCove Nerd Font";
+      name = "JuliaMono Medium";
+      size = 11;
     };
 
     theme = "Gruvbox Dark Soft";

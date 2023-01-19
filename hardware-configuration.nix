@@ -4,30 +4,28 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-
   imports =
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "nvme" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelPackages = pkgs.linuxPackages_zen;
   boot.kernelModules = [ "kvm-intel" ];
   boot.extraModulePackages = [ ];
+
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/367ddff0-1baa-456c-ac92-a43d149f38ae";
+    { device = "/dev/disk/by-uuid/aeaf3e97-a39e-4e48-99d5-654d00aabdbb";
       fsType = "ext4";
     };
 
   fileSystems."/boot/efi" =
-    { device = "/dev/disk/by-uuid/F591-00E7";
+    { device = "/dev/disk/by-uuid/41BC-79B6";
       fsType = "vfat";
     };
 
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/278236fb-010f-4376-862a-99c55a96ec4a"; }
+    [ { device = "/dev/disk/by-uuid/c728dd81-a612-40ba-99ae-1c4cdd04414d"; }
     ];
-
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
@@ -37,41 +35,6 @@
   # networking.interfaces.enp3s0.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
- programs = {
-    nm-applet.enable = true;
-  };
-
-  services = {
-    blueman.enable = true;
-
-    dbus = {
-      enable = true;
-      packages = with pkgs; [ dconf ];
-    };
-
-    xserver = {
-      enable = true;
-
-      dpi = 120;
-      exportConfiguration = true;
-      layout = "us";
-
-      libinput = {
-        enable = true;
-        touchpad = { naturalScrolling = true; };
-      };
-
-      windowManager = {
-        awesome = {
-          enable = true;
-
-          luaModules = lib.attrValues {
-            inherit (pkgs.luaPackages) lgi ldbus luadbi-mysql luaposix;
-          };
-        };
-      };
-    };
-  };
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

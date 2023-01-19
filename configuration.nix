@@ -13,6 +13,7 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -85,6 +86,8 @@
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
       firefox
+      discord
+    #  thunderbird
     ];
   };
 
@@ -101,11 +104,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+git
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
   #  wget
-	neovim
-	discord
-	git
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
@@ -116,6 +117,9 @@
   #   enableSSHSupport = true;
   # };
 
+  services.postgresql = {
+      enable = true;
+  };
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
