@@ -13,7 +13,7 @@
     xclip
     ripgrep
     sumneko-lua-language-server
-
+    gcc
   ];
 
   home.shellAliases = {
@@ -21,13 +21,13 @@
     vim = "nvim";
   };
 
-  xdg.configFile =
-    {
-      "nvim" = {
-        recursive = true;
-        source = ./nvim;
-      };
-    };
+  # xdg.configFile =
+  #   {
+  #     "nvim" = {
+  #       recursive = true;
+  #       source = ./nvim;
+  #     };
+  #   };
 
   xdg.dataFile."nvim/site/pack/nix/start" = {
     recursive = true;
