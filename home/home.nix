@@ -10,8 +10,11 @@
     htop
     github-desktop
     wezterm
+    torrential
+    postman
     # neovim-nightly
     jetbrains.idea-ultimate
+    jetbrains.datagrip
   ];
 
   home.sessionVariables = {

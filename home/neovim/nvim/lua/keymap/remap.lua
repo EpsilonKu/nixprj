@@ -3,7 +3,6 @@ local nmap, imap, cmap = keymap.nmap, keymap.imap, keymap.cmap
 local silent, noremap = keymap.silent, keymap.noremap
 local opts = keymap.new_opts
 local cmd = keymap.cmd
-local wk = require("which-key")
 
 -- noremal remap
 nmap({
@@ -45,6 +44,7 @@ cmap({
   { '<C-h>', '<BS>', opts(noremap) },
 })
 
+--[[ 
 wk.register({
   d = {
     name = "Debug", -- optional group name
@@ -69,4 +69,5 @@ wk.register({
 
     end, "Close window" }
   }
-}, { prefix = "<Space>" })
+}, { prefix = "<Space>" }) 
+--]]

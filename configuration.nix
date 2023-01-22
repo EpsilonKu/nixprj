@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports =
@@ -118,7 +118,19 @@ git
   # };
 
   services.postgresql = {
-      enable = true;
+    enable = true;
+    # package = pkgs.postgresql_10;
+    enableTCPIP = true;
+    # authentication = pkgs.lib.mkOverride 10 ''
+    #   local all all trust
+    #   host all all 127.0.0.1/32 trust
+    #   host all all ::1/128 trust
+    # '';
+    # initialScript = pkgs.writeText "backend-initScript" ''
+    #   CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
+    #   CREATE DATABASE nixcloud;
+    #   GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
+    # '';
   };
   # List services that you want to enable:
 
