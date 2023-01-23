@@ -11,6 +11,10 @@
     github-desktop
     wezterm
     torrential
+    # transmission
+    transmission-gtk
+    minecraft
+    jdk
     postman
     # neovim-nightly
     jetbrains.idea-ultimate
