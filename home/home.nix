@@ -11,9 +11,12 @@
     github-desktop
     wezterm
     torrential
+    steam
+    steam-run
     # transmission
     transmission-gtk
     minecraft
+    prismlauncher
     jdk
     postman
     # neovim-nightly
