@@ -15,6 +15,7 @@
     steam-run
     # transmission
     transmission-gtk
+    onlyoffice-bin
     minecraft
     prismlauncher
     jdk
