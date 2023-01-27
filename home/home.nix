@@ -14,11 +14,8 @@
     torrential
     steam
     steam-run
-    # transmission
     transmission-gtk
     onlyoffice-bin
-    minecraft
-    prismlauncher
     jdk
     postman
     # neovim-nightly
@@ -28,8 +25,6 @@
     nodejs
     nodePackages.npm
     nodePackages.node2nix
-    # customNodePackages."@angular/cli"
-    # nodePackages.angular.cli
   ];
 
   home.sessionVariables = {
