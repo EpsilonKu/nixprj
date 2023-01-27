@@ -5,6 +5,7 @@
   # paths it should manage.
   home.username = "epsku";
   home.homeDirectory = "/home/epsku";
+  # customNodePackages = pkgs.callPackage ./customNodePackages { };
 
   home.packages = with pkgs; [                              
     htop
@@ -23,6 +24,12 @@
     # neovim-nightly
     jetbrains.idea-ultimate
     jetbrains.datagrip
+    jetbrains.webstorm
+    nodejs
+    nodePackages.npm
+    nodePackages.node2nix
+    # customNodePackages."@angular/cli"
+    # nodePackages.angular.cli
   ];
 
   home.sessionVariables = {
