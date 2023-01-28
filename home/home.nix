@@ -9,24 +9,31 @@
 
   home.packages = with pkgs; [                              
     htop
-    github-desktop
     wezterm
-    torrential
+
     steam
     steam-run
+
     transmission-gtk
     onlyoffice-bin
+
     jdk
+
     postman
-    # neovim-nightly
+    github-desktop
+
     jetbrains.idea-ultimate
     jetbrains.datagrip
     jetbrains.webstorm
+
     vivaldi
     chromium
+
     nodejs
     nodePackages.npm
     nodePackages.node2nix
+
+    flyctl
   ];
 
   home.sessionVariables = {
