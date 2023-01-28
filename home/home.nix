@@ -22,6 +22,8 @@
     jetbrains.idea-ultimate
     jetbrains.datagrip
     jetbrains.webstorm
+    vivaldi
+    chromium
     nodejs
     nodePackages.npm
     nodePackages.node2nix
