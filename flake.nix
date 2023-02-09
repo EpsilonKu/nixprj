@@ -9,20 +9,26 @@
     neovim-nightly-overlay = {
       url = "github:nix-community/neovim-nightly-overlay";
       inputs.nixpkgs.follows = "nixpkgs-neovim";
-    };  };
+    };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, neovim-nightly-overlay, ... }: 
-  {
- #    let 
- # overlays = [
- # (final: prev: {
- #                  neovim-nightly = prev.neovim.overrideAttrs (c: { src = inputs.neovim-nightly; });
- #                })
- #        ];
- #    in {
+    language-servers.url = "sourcehut:~bwolf/language-servers.nix";
+    language-servers.inputs.nixpkgs.follows = "nixpkgs";
+    nixpkgs-f2k.url = "github:fortuneteller2k/nixpkgs-f2k";
+    nixpkgs-f2k.inputs.nixpkgs.follows = "nixpkgs";
+  };
+
+  outputs = inputs @ {
+    self,
+    nixpkgs,
+    home-manager,
+    neovim-nightly-overlay,
+    ...
+  }: {
+
     nixosConfigurations = {
       hostname = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
+        specialArgs = { inherit inputs ; };
         modules = [
           ./configuration.nix
           ./ui/fonts.nix
@@ -33,13 +39,10 @@
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
-            home-manager.users.epsku = import ./home/home.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass
-            # arguments to home.nix
+            home-manager.users.epsku = import ./home/home.nix inputs;
           }
         ];
       };
     };
-   };
+  };
 }

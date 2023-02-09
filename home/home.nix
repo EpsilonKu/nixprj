@@ -1,5 +1,5 @@
-{ config, pkgs, ... }:
-
+{ language-servers, nixpkgs-f2k, nixpkgs, ... }:
+{ config, pkgs, inputs, ... }:
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
@@ -7,7 +7,13 @@
   home.homeDirectory = "/home/epsku";
   # customNodePackages = pkgs.callPackage ./customNodePackages { };
 
-  home.packages = with pkgs; [                              
+  home.packages = with pkgs; [                           
+    # lua52Packages.lgi
+    # language-servers.packages.${pkgs.system}.angular-language-server
+    # nixpkgs-f2k.packages.${pkgs.system}.awesome-git
+    nodePackages.vscode-langservers-extracted
+    elmPackages.nodejs
+
     htop
     wezterm
 
@@ -18,6 +24,8 @@
     onlyoffice-bin
 
     jdk
+    # jdk11
+    # jdk8
 
     postman
     github-desktop
@@ -29,11 +37,11 @@
     vivaldi
     chromium
 
-    nodejs
-    nodePackages.npm
-    nodePackages.node2nix
+    # nodejs
+    # nodePackages.npm
+    # nodePackages.typescript
+    # nodePackages.node2nix
 
-    flyctl
   ];
 
   home.sessionVariables = {

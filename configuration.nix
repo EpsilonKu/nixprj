@@ -2,20 +2,29 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }:
+{ inputs, outputs, config, pkgs, lib, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [ # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
+  # boot.loader.timeout = 0;
+  boot.consoleLogLevel = 4;
+  boot.plymouth.enable = true;
+  boot.initrd.verbose = false;
+  boot.loader.grub.extraEntries = ''
+    menuentry "Windows 11" {
+      chainloader (hd1,3)+1
+    }
+  '';
 
   networking.hostName = "nixos"; # Define your hostname.
+  systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -43,8 +52,50 @@
     LC_TIME = "kk_KZ.UTF-8";
   };
 
+  nixpkgs.overlays = [ (final: prev:
+        {
+          awesome = inputs.nixpkgs-f2k.packages.${pkgs.system}.awesome-git;
+        })
+  ]; 
+  services.fprintd.enable = true;
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  # services.xserver = {
+  #   enable = true;
+  #   displayManager = {
+  #     lightdm.enable = true;
+  #     defaultSession = "none+awesome";
+  #   };
+  #   windowManager.awesome = {
+  #     enable = true;
+  #     package = pkgs.awesome.overrideAttrs (old: {
+  #       src = pkgs.fetchFromGitHub {
+  #         owner = "awesomeWM";
+  #         repo = "awesome";
+  #         rev = "392dbc2";
+  #         sha256 =
+  #           "sha256:093zapjm1z33sr7rp895kplw91qb8lq74qwc0x1ljz28xfsbp496";
+  #       };
+  #     });
+  #   };
+  #
+  services.xserver.windowManager = {
+        awesome = {
+          enable = true;
+
+          luaModules = lib.attrValues {
+            # inherit (pkgs)
+              # lua-libpulse-glib;
+
+            inherit (pkgs.luaPackages)
+              lgi
+              ldbus
+              luadbi-mysql
+              luaposix;
+          };
+        };
+  };
 
   # Enable the Pantheon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
@@ -87,12 +138,13 @@
     packages = with pkgs; [
       firefox
       discord
-    #  thunderbird
+      #  thunderbird
     ];
   };
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
   nix = {
     package = pkgs.nixUnstable;
     extraOptions = ''
@@ -100,14 +152,14 @@
     '';
   };
 
-
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
-git
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
-  ];
+  environment.systemPackages = with pkgs;
+    [
+      git
+      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      #  wget
+    ];
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
