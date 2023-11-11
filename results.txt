@@ -1,0 +1,2 @@
+[Fri Sep 15 16:12:09 2023]
+Quitting GIMPS.

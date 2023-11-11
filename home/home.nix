@@ -3,39 +3,73 @@
 {
   # Home Manager needs a bit of information about you and the
   # paths it should manage.
-  home.username = "epsku";
-  home.homeDirectory = "/home/epsku";
+  home.username = "kurenshe";
+  home.homeDirectory = "/home/kurenshe";
   # customNodePackages = pkgs.callPackage ./customNodePackages { };
 
+  # home.file."jdks/openjdk17".source = pkgs.jdk;
   home.packages = with pkgs; [                           
     # lua52Packages.lgi
     # language-servers.packages.${pkgs.system}.angular-language-server
     # nixpkgs-f2k.packages.${pkgs.system}.awesome-git
     nodePackages.vscode-langservers-extracted
+    language-servers.packages.${pkgs.system}.jdt-language-server
     elmPackages.nodejs
+    # newm.packages.${pkgs.system}.newm
+    # newm.packages.x86_64-linux.newm
 
-    htop
-    wezterm
+    nodejs
+    nodePackages.npm
+    nodePackages.svelte-language-server
+    nodePackages.typescript-language-server
+    nodePackages.gulp
+    dbeaver
 
-    steam
-    steam-run
+    fontforge-gtk
+
+    gitflow
+
+    ulauncher
+    neovide
+    lazygit
+    # wl-clipboard
+
+    plymouth
+    breeze-plymouth
+    anydesk
+    newm
+    alacritty
+    unetbootin
+
+    # steam
+    # steam-run
 
     transmission-gtk
     onlyoffice-bin
 
-    jdk
+    monitor
+
+    # jdk
+    openjdk17
     # jdk11
     # jdk8
 
     postman
     github-desktop
 
-    jetbrains.idea-ultimate
-    jetbrains.datagrip
-    jetbrains.webstorm
+    jetbrains.idea-community
 
-    vivaldi
     chromium
+    google-chrome
+
+    filezilla
+
+    obs-studio
+    pgsync
+    coturn
+    stuntman
+    janus-gateway
+    docker-compose
 
     # nodejs
     # nodePackages.npm
@@ -47,17 +81,12 @@
   home.sessionVariables = {
     EDITOR = "nvim";
   };
-  programs = {
-      java.enable = true;
-      # neovim = {
-      #   enable = true;
-      #   defaultEditor = true;
-      # };
-  };
 
   imports = [
     ./kitty.nix
+    ./wezterm.nix
     ./neovim
+    # ./newm
   ];
 
   # This value determines the Home Manager release that your
@@ -68,7 +97,7 @@
   # You can update Home Manager without changing this value. See
   # the Home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "22.11";
+  home.stateVersion = "23.05";
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;

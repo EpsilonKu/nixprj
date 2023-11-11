@@ -10,29 +10,62 @@
   ];
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  # boot.loader.timeout = 0;
-  boot.consoleLogLevel = 4;
-  boot.plymouth.enable = true;
-  boot.initrd.verbose = false;
-  boot.loader.grub.extraEntries = ''
-    menuentry "Windows 11" {
-      chainloader (hd1,3)+1
-    }
-  '';
+  boot.consoleLogLevel = 0;
+  boot.kernelParams = [
+      "quiet"
+      "splash"
+      "boot.shell_on_fail"
+      "i915.fastboot=1"
+      "loglevel=3"
+      "rd.systemd.show_status=false"
+      "rd.udev.log_level=3"
+      "udev.log_priority=3"
+    ];
+  boot.plymouth = {
+    enable = true;
+    theme = "breeze";
+  };
+  # environment.variables = {
+  #   _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
+  # };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  boot.loader = {
+    timeout = lib.mkDefault 0;
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      editor = false;
+      configurationLimit = 100;
+    };
+  };
+  boot.initrd.systemd.enable = true;
+  console = {
+    useXkbConfig = true;
+    earlySetup = false;
+  };
+ 
+  networking = {
+    hostName = "nixos";
+    networkmanager.enable = true;
+    # ipv4.addresses =[ {
+    #     address = "192.168.1.157";
+    #     prefixLength = 24;
+    #   }];
+    # };
+    firewall = {
+      allowedTCPPorts = [ 8082 3010 ];
+      allowedUDPPorts = [ 8082 3010 ];
+    };
+    # wireless.enable = true;
+  };
+
   systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
+ 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Almaty";
@@ -52,21 +85,71 @@
     LC_TIME = "kk_KZ.UTF-8";
   };
 
-  nixpkgs.overlays = [ (final: prev:
+  nixpkgs.config.permittedInsecurePackages = [
+                "openssl-1.1.1v"
+                "openssl-1.1.1w"
+              ];
+  nixpkgs.overlays = [ 
+    (final: prev:
         {
-          awesome = inputs.nixpkgs-f2k.packages.${pkgs.system}.awesome-git;
+          # awesome = inputs.nixpkgs-f2k.packages.${pkgs.system}.awesome-git;
+          newm = inputs.newmpkg.packages.${pkgs.system}.newm-atha;
         })
   ]; 
   services.fprintd.enable = true;
 
+  services.udev.extraRules = ''
+    ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{devpath}=="[0-9]*.4", ATTRS{product}=="CP2102 USB to UART Bridge Controller", SYMLINK+="alcotester"
+    ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{devpath}=="[0-9]*.3", ATTRS{idVendor}=="10c4", ATTRS{idProduct}=="ea60", SYMLINK+="ecg"
+    #ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{devpath}=="[0-9]*.3", ATTRS{product}=="CP2102 USB to UART Bridge Controller", SYMLINK+="alcotester"
+    ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{manufacturer}=="Prolific Technology Inc.", ATTRS{idProduct}=="23c3", ATTRS{idVendor}=="067b", SYMLINK+="tonometer"
+    ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{product}=="JXB183", SYMLINK+="thermometer"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{devpath}=="[0-9]*.1", ATTRS{idProduct}=="3035", ATTRS{idVendor}=="0bda", SYMLINK+="cam1"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{devpath}=="[0-9]*.2", ATTRS{idProduct}=="3035", ATTRS{idVendor}=="0bda", SYMLINK+="cam0"
+    #ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{interface}=="USB Color Camera", SYMLINK+="cam1"
+    #ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{interface}=="USB IR Camera", SYMLINK+="cam0"
+    ACTION=="add", KERNEL=="ttyUSB[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{manufacturer}=="FTDI", ATTRS{idProduct}=="6001", ATTRS{idVendor}=="0403", ATTRS{serial}=="A505JYQP|AD0KCRK8|AQ02Z7MF|AL02VI4W|AL02VI6U|AL02VI71|AQ02Z7MI|AQ>
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTR{name}=="USB 2.0 Camera: HD USB Camera", ATTRS{idProduct}=="9530", ATTRS{idVendor}=="05a3", SYMLINK+="cam2"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTR{name}=="HD USB Camera: HD USB Camera", SYMLINK+="cam2"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTR{name}=="Logitech Webcam C930e", SYMLINK+="cam4
+
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{interface}=="USB Video Device", SYMLINK+="cam0"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{devpath}=="3", ATTRS{idProduct}=="3828", ATTRS{idVendor}=="058f", SYMLINK+="cam0"
+
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{devpath}=="4", ATTRS{idProduct}=="279f", ATTRS{idVendor}=="eb1a", SYMLINK+="cam1"
+
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{interface}=="USB2.0_CAM2", SYMLINK+="cam0"
+    ACTION=="add", KERNEL=="video[02468]*", SUBSYSTEM=="video4linux", SUBSYSTEMS=="usb", ATTRS{interface}=="USB2.0_CAM1", SYMLINK+="cam1"
+
+    ACTION=="add", KERNEL=="ttyACM[0-9]*", SUBSYSTEM=="tty", SUBSYSTEMS=="usb", ATTRS{product}=="USB Adapter Z2-USB", SYMLINK+="cardreader"
+    # Your rule goes here
+  '';
+
+  services.openssh = {
+    enable = true;
+    # ports = [3010 8082];
+    settings.PasswordAuthentication = true;
+    # settings.KbdInteractiveAuthentication = false;
+  };
+  services.earlyoom = {
+    enable = true;
+    extraArgs = [
+     "-g" "--avoid '^(init|Xorg|pantheon|gnome|gcd|plank|wingpanel|gala)$'"
+     "--prefer '^(firefox|java|npm|onlyoffice)$'"
+    ];
+
+  };
+
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-  # services.xserver = {
-  #   enable = true;
+  # services.xserver.enable = true;
+  services.xserver = {
+     enable = true;
+     excludePackages = [ pkgs.xterm ];
+     xautolock.time = 999;
   #   displayManager = {
   #     lightdm.enable = true;
   #     defaultSession = "none+awesome";
-  #   };
+  };
   #   windowManager.awesome = {
   #     enable = true;
   #     package = pkgs.awesome.overrideAttrs (old: {
@@ -80,27 +163,32 @@
   #     });
   #   };
   #
-  services.xserver.windowManager = {
-        awesome = {
-          enable = true;
-          package = inputs.nixpkgs-f2k.packages.${pkgs.system}.awesome-git;
-
-          luaModules = lib.attrValues {
-            # inherit (pkgs)
-              # lua-libpulse-glib;
-
-            inherit (pkgs.luaPackages)
-              lgi
-              ldbus
-              luadbi-mysql
-              luaposix;
-          };
-        };
-  };
+  # services.xserver.windowManager = {
+  #       awesome = {
+  #         enable = true;
+  #         package = inputs.nixpkgs-f2k.packages.${pkgs.system}.awesome-git;
+  #
+  #         luaModules = lib.attrValues {
+  #           # inherit (pkgs)
+  #             # lua-libpulse-glib;
+  #
+  #           inherit (pkgs.luaPackages)
+  #             lgi
+  #             ldbus
+  #             luadbi-mysql
+  #             luaposix;
+  #         };
+  #       };
+  # };
 
   # Enable the Pantheon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.pantheon.enable = true;
+  services.xserver.desktopManager.session = [
+        { name = "newm";
+          start = ''start-newm & waitPID=$!'';
+        }
+      ];
 
   # Configure keymap in X11
   services.xserver = {
@@ -132,13 +220,14 @@
   # services.xserver.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.epsku = {
+  users.users.kurenshe = {
     isNormalUser = true;
-    description = "Kurenshe Nurdaulet";
-    extraGroups = [ "networkmanager" "wheel" ];
+    description = "Nurdaulet";
+    extraGroups = [ "networkmanager" "wheel" "docker"];
     packages = with pkgs; [
       firefox
       discord
+      sublime4
       #  thunderbird
     ];
   };
@@ -158,37 +247,18 @@
   environment.systemPackages = with pkgs;
     [
       git
-      #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+      # newm
+      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
       #  wget
     ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
+  programs.steam.enable = true;
+  programs.ssh.askPassword = "";
 
   services.postgresql = {
     enable = true;
-    # package = pkgs.postgresql_10;
-    enableTCPIP = true;
-    # authentication = pkgs.lib.mkOverride 10 ''
-    #   local all all trust
-    #   host all all 127.0.0.1/32 trust
-    #   host all all ::1/128 trust
-    # '';
-    # initialScript = pkgs.writeText "backend-initScript" ''
-    #   CREATE ROLE nixcloud WITH LOGIN PASSWORD 'nixcloud' CREATEDB;
-    #   CREATE DATABASE nixcloud;
-    #   GRANT ALL PRIVILEGES ON DATABASE nixcloud TO nixcloud;
-    # '';
   };
+  virtualisation.docker.enable = true;
   # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -196,12 +266,6 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "22.11"; # Did you read the comment?
+  system.stateVersion = "23.05"; # Did you read the comment?
 
 }

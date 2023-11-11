@@ -1,0 +1,39 @@
+[Fri Sep 15 16:12:27 2023]
+Compare your results to other computers at http://www.mersenne.org/report_benchmarks
+Intel(R) Core(TM) i5-7600 CPU @ 3.50GHz
+CPU speed: 3652.26 MHz, 4 cores
+CPU features: Prefetchw, SSE, SSE2, SSE4, AVX, AVX2, FMA
+L1 cache size: 4x32 KB, L2 cache size: 4x256 KB, L3 cache size: 6 MB
+L1 cache line size: 64 bytes, L2 cache line size: 64 bytes
+Machine topology as determined by hwloc library:
+ Machine#0 (total=16257548KB, DMIProductName="System Product Name", DMIProductVersion="System Version", DMIBoardVendor="ASUSTeK COMPUTER INC.", DMIBoardName="PRIME H270-PRO", DMIBoardVersion="Rev X.0x", DMIBoardAssetTag="Default string", DMIChassisVendor="Default string", DMIChassisType=3, DMIChassisVersion="Default string", DMIChassisAssetTag="Default string", DMIBIOSVendor="American Megatrends Inc.", DMIBIOSVersion=1205, DMIBIOSDate=05/03/2018, DMISysVendor="System manufacturer", Backend=Linux, LinuxCgroup=/user.slice, OSName=Linux, OSRelease=6.1.51, OSVersion="#1-NixOS SMP PREEMPT_DYNAMIC Sat Sep  2 07:16:20 UTC 2023", HostName=nixos, Architecture=x86_64, hwlocVersion=2.9.2, ProcessName=mprime)
+  Package#0 (total=16257548KB, CPUVendor=GenuineIntel, CPUFamilyNumber=6, CPUModelNumber=158, CPUModel="Intel(R) Core(TM) i5-7600 CPU @ 3.50GHz", CPUStepping=9)
+    L3#0 (size=6144KB, linesize=64, ways=12, Inclusive=1)
+      L2#0 (size=256KB, linesize=64, ways=4, Inclusive=0)
+        L1d#0 (size=32KB, linesize=64, ways=8, Inclusive=0)
+          Core#0 (cpuset: 0x00000001)
+            PU#0 (cpuset: 0x00000001)
+      L2#1 (size=256KB, linesize=64, ways=4, Inclusive=0)
+        L1d#1 (size=32KB, linesize=64, ways=8, Inclusive=0)
+          Core#1 (cpuset: 0x00000002)
+            PU#1 (cpuset: 0x00000002)
+      L2#2 (size=256KB, linesize=64, ways=4, Inclusive=0)
+        L1d#2 (size=32KB, linesize=64, ways=8, Inclusive=0)
+          Core#2 (cpuset: 0x00000004)
+            PU#2 (cpuset: 0x00000004)
+      L2#3 (size=256KB, linesize=64, ways=4, Inclusive=0)
+        L1d#3 (size=32KB, linesize=64, ways=8, Inclusive=0)
+          Core#3 (cpuset: 0x00000008)
+            PU#3 (cpuset: 0x00000008)
+Prime95 64-bit version 30.8, RdtscTiming=1
+Timings for 2048K FFT length (4 cores, 1 worker):  4.21 ms.  Throughput: 237.47 iter/sec.
+Timings for 2048K FFT length (4 cores, 4 workers): 19.88, 19.73, 19.72, 19.81 ms.  Throughput: 202.15 iter/sec.
+Timings for 2304K FFT length (4 cores, 1 worker):  4.90 ms.  Throughput: 204.27 iter/sec.
+Timings for 2304K FFT length (4 cores, 4 workers): 21.23, 21.69, 21.27, 21.41 ms.  Throughput: 186.93 iter/sec.
+Timings for 2400K FFT length (4 cores, 1 worker):  5.24 ms.  Throughput: 190.69 iter/sec.
+Timings for 2400K FFT length (4 cores, 4 workers): 22.28, 22.12, 22.40, 22.49 ms.  Throughput: 179.20 iter/sec.
+Timings for 2560K FFT length (4 cores, 1 worker):  5.70 ms.  Throughput: 175.57 iter/sec.
+Timings for 2560K FFT length (4 cores, 4 workers): 24.36, 24.72, 24.44, 24.45 ms.  Throughput: 163.34 iter/sec.
+Timings for 2688K FFT length (4 cores, 1 worker):  5.99 ms.  Throughput: 166.84 iter/sec.
+Timings for 2688K FFT length (4 cores, 4 workers): 24.93, 24.72, 25.29, 25.12 ms.  Throughput: 159.91 iter/sec.
+Timings for 2880K FFT length (4 cores, 1 worker):  6.45 ms.  Throughput: 155.10 iter/sec.
