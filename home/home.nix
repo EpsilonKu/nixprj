@@ -40,6 +40,8 @@
     newm
     alacritty
     unetbootin
+    graalvm-ce
+    gradle
 
     # steam
     # steam-run
@@ -50,7 +52,7 @@
     monitor
 
     # jdk
-    openjdk17
+    # openjdk17
     # jdk11
     # jdk8
 
