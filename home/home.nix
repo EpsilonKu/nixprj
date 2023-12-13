@@ -9,33 +9,34 @@
 
   # home.file."jdks/openjdk17".source = pkgs.jdk;
   home.packages = with pkgs; [                           
-    # lua52Packages.lgi
-    # language-servers.packages.${pkgs.system}.angular-language-server
-    # nixpkgs-f2k.packages.${pkgs.system}.awesome-git
-    nodePackages.vscode-langservers-extracted
-    language-servers.packages.${pkgs.system}.jdt-language-server
-    elmPackages.nodejs
-    # newm.packages.${pkgs.system}.newm
-    # newm.packages.x86_64-linux.newm
 
+    elmPackages.nodejs
     nodejs
     nodePackages.npm
+
+    nodePackages.vscode-langservers-extracted
+    language-servers.packages.${pkgs.system}.jdt-language-server
     nodePackages.svelte-language-server
     nodePackages.typescript-language-server
-    nodePackages.gulp
+
     dbeaver
 
     fontforge-gtk
+    helix
+    cargo
+
+    stdenv.cc.cc.lib
 
     gitflow
 
     ulauncher
     neovide
     lazygit
-    # wl-clipboard
+    meslo-lg
 
     plymouth
     breeze-plymouth
+
     anydesk
     newm
     alacritty
@@ -43,20 +44,13 @@
     graalvm-ce
     gradle
 
-    # steam
-    # steam-run
+    openconnect
+    openssl
+    remmina
 
     transmission-gtk
     onlyoffice-bin
-
     monitor
-
-    # jdk
-    # openjdk17
-    # jdk11
-    # jdk8
-
-    postman
     github-desktop
 
     jetbrains.idea-community
@@ -73,11 +67,7 @@
     janus-gateway
     docker-compose
 
-    # nodejs
-    # nodePackages.npm
-    # nodePackages.typescript
-    # nodePackages.node2nix
-
+    expect
   ];
 
   home.sessionVariables = {
@@ -88,8 +78,18 @@
     ./kitty.nix
     ./wezterm.nix
     ./neovim
-    # ./newm
   ];
+
+  # pkgs.mkShell {
+  #
+  #   buildInputs = [
+  #     jetbrains.idea-community
+  #   ];
+  #   shellHook = ''
+  #     # fixes libstdc++ issues and libgl.so issues
+  #     LD_LIBRARY_PATH=${stdenv.cc.cc.lib}/lib/
+  #   ''
+  # }
 
   # This value determines the Home Manager release that your
   # configuration is compatible with. This helps avoid breakage

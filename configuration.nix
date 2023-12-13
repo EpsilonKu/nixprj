@@ -25,9 +25,14 @@
     enable = true;
     theme = "breeze";
   };
-  # environment.variables = {
-  #   _JAVA_OPTIONS = "-Dsun.java2d.uiScale=2";
-  # };
+  environment.sessionVariables= rec {
+    DB_NAME = "pmo_tst";
+    DB_PWD = "CAPm3QQy";
+    "face_recognition.modelsPath" = "/home/kurenshe/data/models";
+    "server.port" = "8082";
+    DB_HOST = "206.62.53.63";
+    LD_LIBRARY_PATH = "${pkgs.stdenv.cc.cc.lib}/lib";
+  };
 
   boot.loader = {
     timeout = lib.mkDefault 0;
@@ -47,16 +52,10 @@
   networking = {
     hostName = "nixos";
     networkmanager.enable = true;
-    # ipv4.addresses =[ {
-    #     address = "192.168.1.157";
-    #     prefixLength = 24;
-    #   }];
-    # };
     firewall = {
       allowedTCPPorts = [ 8082 3010 ];
       allowedUDPPorts = [ 8082 3010 ];
     };
-    # wireless.enable = true;
   };
 
   systemd.targets."multi-user".conflicts = [ "getty@tty1.service" ];
@@ -96,6 +95,7 @@
           newm = inputs.newmpkg.packages.${pkgs.system}.newm-atha;
         })
   ]; 
+  services.flatpak.enable = true;
   services.fprintd.enable = true;
 
   services.udev.extraRules = ''
