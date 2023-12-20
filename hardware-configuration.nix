@@ -33,8 +33,17 @@
 
   networking.extraHosts =
   ''
-    192.168.1.100:3010 med365
-    10.0.0.1 server
+    10.48.96.9 git.med365.kz
+    10.48.96.5 rancher.med365.kz
+    10.48.96.5 prometheus.med365.kz
+    10.48.96.5 grafana.med365.kz
+    10.48.96.5 rabbitmq-ui.med365.kz
+    10.48.96.5 passbolt.med365.kz
+    10.48.96.12 nexus.med365.kz
+    10.48.96.12 nexus-docker.med365.kz
+    10.48.96.12 ssp.med365.kz 
+    10.50.112.176 keycloak.med365.kz
+    10.50.112.176 asmo.med365.kz
   '';
   # networking.interfaces.eno2.useDHCP = lib.mkDefault true;
   # networking.interfaces.wlo1.useDHCP = lib.mkDefault true;
