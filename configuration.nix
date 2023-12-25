@@ -50,6 +50,22 @@
   };
  
   networking = {
+    extraHosts =
+      ''
+        10.48.96.9 git.med365.kz
+        10.48.96.5 rancher.med365.kz
+        10.48.96.5 prometheus.med365.kz
+        10.48.96.5 grafana.med365.kz
+        10.48.96.5 rabbitmq-ui.med365.kz
+        10.48.96.5 passbolt.med365.kz
+        149.154.188.53 nexus.med365.kz
+        149.154.188.53 nexus-docker.med365.kz
+        149.154.188.53 ssp.med365.kz
+        10.50.112.176 docker.med365.kz
+        10.50.112.176 keycloak.med365.kz
+        10.50.112.176 asmo.med365.kz
+        192.168.1.100 med365.kz
+      '';
     hostName = "nixos";
     networkmanager.enable = true;
     firewall = {
@@ -257,7 +273,10 @@
   services.postgresql = {
     enable = true;
   };
-  virtualisation.docker.enable = true;
+  virtualisation.docker = {
+    enable = true;
+    extraOptions = ''--insecure-registry "nexus-docker.med365.kz"'';
+  };
   # List services that you want to enable:
 
   # Open ports in the firewall.
